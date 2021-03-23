@@ -11,10 +11,14 @@
 
 ## 1.1. Box Contraints
 
-Flutter framework is constraint based framework, i.e, a widget bounds is constrained by the parent widget. If for example, you container has a dimension of height 900px and width 500px but when you run the code on your simulator, you see that its actually smaller than what you have intended to, this is due to the box constraints coming in from the parent widget which passes contraints of maybe 800px 400px. If the parent of the container is a scaffold, then the box constraint coming in from the scaffold to the container would be the screen dimensions. Box contraints are passed automatically by the parent.
+Flutter framework is constraint based framework, i.e, a widget bounds is constrained by the parent widget. If, for example, you have a container has a dimension of height 900px and width 500px but when you run the code on your simulator, you see that its actually smaller than what you have intended to, this is due to the box constraints coming in from the parent widget which passes contraints of maybe 800px 400px. If the parent of the container is a scaffold, then the box constraint coming in from the scaffold to the container would be the screen dimensions. Box contraints are passed automatically by the parent.
+
+![alt Box Constraint Image](images/box_constraint.png)
+
+<br/>
 
 <details>
-  <summary>Example 1</summary>
+  <summary>Example 1 - Scaffold -> Container</summary>
 
 <p>
 
@@ -45,7 +49,7 @@ class Example1 extends StatelessWidget {
 </details>
 
 <details>
-  <summary>Example 1</summary>
+  <summary>Example 2 - Scaffold -> Container 1 -> Container 2</summary>
 
 <p>
 
@@ -81,7 +85,15 @@ class Example2 extends StatelessWidget {
 
 <br/>
 
-*A widget can decide its own size only within the constraints given to it by its parent. This means a widget usually can’t have any size it wants.*
+*"A widget can decide its own size only within the constraints given to it by its parent. This means a widget usually can’t have any size it wants."*
+
+Notes:
+- A parent can pass inifinity constraints to its child
+- You can check the constraints coming from parent from dev tools for debugging.
+
+Additional Reading:
+- [Box Constraints 101](https://marsgoat.medium.com/flutter-box-constraints-101-the-basics-bd0babe650f9)
+- [Understanding Constraints](https://flutter.dev/docs/development/ui/layout/constraints)
 
 ## 1.2. Responsive Apps On Various Mobile Screen Sizes
 When creating an app across various mobile screen, we want to make sure they are responsive and expand or collapse based on the screen dimensions. So we will look at how to achieve that with Columns and Rows.
