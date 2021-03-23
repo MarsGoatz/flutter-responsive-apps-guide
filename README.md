@@ -1,4 +1,4 @@
-**NOTE: Everything in this repo falls under the GPL 3 license EXCEPT THE IMAGES IN README!**
+**NOTE: Everything in this repo falls under the GPL 3 license EXCEPT THE IMAGES IN README!** This is becaue of the tool used to create them.
 <br/>
 # Creating Responsive Apps With Flutter
 
@@ -8,8 +8,8 @@
     - [1.2.1. Columns](#121-columns)
     - [1.2.2. Handling Orientation](#122-handling-orientation)
   - [1.3. Handling Wider Screens](#13-handling-wider-screens)
-    - [1.3.1. MediaQuery](#131-mediaquery)
-    - [1.3.2. Layout Builder](#132-layout-builder)
+    - [1.3.1. Layout Builder](#131-layout-builder)
+    - [1.3.2. MediaQuery](#132-mediaquery)
 
 ## 1.1. Box Contraints
 
@@ -266,8 +266,14 @@ Additional Reading:
 
 <br/>
 
+Notes:
+
 - Use OrientationBuilder to know what the current orientation and return the respective widget
 - Disable particular orientation
+
+Additional Reading:
+- [OrientationBuilder](https://api.flutter.dev/flutter/widgets/OrientationBuilder-class.html)
+- [Flutter Docs Orientation](https://flutter.dev/docs/cookbook/design/orientation)
 
 ## 1.3. Handling Wider Screens
 
@@ -279,65 +285,13 @@ either MediaQuery or LayoutBuilder.
 
 <br/>
 
-### 1.3.1. MediaQuery
-
-Using MediaQuery, you can get information like screen dimensions, accessibilty information which you can use to handle various screen sizes.
-
-<details>
-  <summary>Media Query Example</summary>
-
-<p>
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
-import '../responsive_util.dart';
-
-class MediaQueryResponsive extends StatelessWidget {
-  const MediaQueryResponsive({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: ResponsiveUtil.isWideScreen(context)
-            ? null
-            : AppBar(
-                title: Text('MediaQuery Responsive'),
-              ),
-        body: GridView.count(
-          crossAxisCount: MediaQuery.of(context).size.width < 500 ? 2 : 4,
-          children: List.generate(100, (index) {
-            return Container(
-              child: Center(
-                child: Image.network(
-                  'https://picsum.photos/id/${index + 100}/${MediaQuery.of(context).size.width < 500 ? (MediaQuery.of(context).size.width / 2).round() : (MediaQuery.of(context).size.width / 4).round()}',
-                  loadingBuilder: (BuildContext context, Widget child,
-                      ImageChunkEvent loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ),
-            );
-          }),
-        ));
-  }
-}
-
-```
-</p>
-</details>
-
-### 1.3.2. Layout Builder
+### 1.3.1. Layout Builder
 
 Layout builder is similar to MediaQuery when it comes to screen sizes but it can used with any widget 
 and get the parent constraints.
 
 <details>
-  <summary>Media Query Example</summary>
+  <summary>Layout Builder Orientation Example</summary>
 
 <p>
 
@@ -387,3 +341,228 @@ class LayoutBuilderResponsive extends StatelessWidget {
 ```
 </p>
 </details>
+
+### 1.3.2. MediaQuery
+
+Using MediaQuery, you can get information like screen dimensions, accessibilty information which you can use to handle various screen sizes.
+
+<details>
+  <summary>Media Query Example Handling Orientation</summary>
+
+<p>
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import '../responsive_util.dart';
+
+class MediaQueryResponsive extends StatelessWidget {
+  const MediaQueryResponsive({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: ResponsiveUtil.isWideScreen(context)
+            ? null
+            : AppBar(
+                title: Text('MediaQuery Responsive'),
+              ),
+        body: GridView.count(
+          crossAxisCount: MediaQuery.of(context).size.width < 500 ? 2 : 4,
+          children: List.generate(100, (index) {
+            return Container(
+              child: Center(
+                child: Image.network(
+                  'https://picsum.photos/id/${index + 100}/${MediaQuery.of(context).size.width < 500 ? (MediaQuery.of(context).size.width / 2).round() : (MediaQuery.of(context).size.width / 4).round()}',
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              ),
+            );
+          }),
+        ));
+  }
+}
+
+```
+</p>
+</details>
+
+<details>
+  <summary>Media Query Example Handling Companion App</summary>
+
+<p>
+
+```dart
+
+class ResponsiveUtil {
+  static final kBreakPoint = 800;
+
+  static bool isWideScreen(BuildContext context) {
+    return MediaQuery.of(context).size.width > kBreakPoint;
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  PageController _controller = PageController(
+    initialPage: 0,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: ResponsiveUtil.isWideScreen(context)
+          ? SafeArea(
+              child: Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * .30,
+                    child: ListView(
+                      children: [
+                        ListTile(
+                          title: Center(
+                            child: Text('OPTIONS'),
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.orange,
+                        ),
+                        ListTileCustomWideScreen(
+                            title: 'Box Constraint Examples',
+                            onTap: () => _controller.page == 0
+                                ? null
+                                : _controller.animateToPage(0,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.fastLinearToSlowEaseIn)),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        ListTileCustomWideScreen(
+                            title: 'Columns & Rows',
+                            onTap: () => _controller.page == 1
+                                ? null
+                                : _controller.animateToPage(1,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.fastLinearToSlowEaseIn)),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        ListTileCustomWideScreen(
+                            title: 'Media Query',
+                            onTap: () => _controller.page == 2
+                                ? null
+                                : _controller.animateToPage(2,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.fastLinearToSlowEaseIn)),
+                        Divider(
+                          color: Colors.white,
+                        ),
+                        ListTileCustomWideScreen(
+                            title: 'Layout Builder',
+                            onTap: () => _controller.page == 3
+                                ? null
+                                : _controller.animateToPage(3,
+                                    duration: Duration(milliseconds: 500),
+                                    curve: Curves.fastLinearToSlowEaseIn)),
+                        Divider(
+                          color: Colors.white,
+                        )
+                      ],
+                    ),
+                  ),
+                  VerticalDivider(
+                    color: Colors.grey,
+                    indent: 0,
+                    endIndent: 0,
+                    thickness: 1,
+                    width: 0.5,
+                  ),
+                  Expanded(
+                      child: PageView(
+                    physics: NeverScrollableScrollPhysics(),
+                    pageSnapping: false,
+                    controller: _controller,
+                    children: [
+                      BoxContraintExamples(),
+                      ColumnExamples(),
+                      MediaQueryResponsive(),
+                      LayoutBuilderResponsive()
+                    ],
+                  ))
+                ],
+              ),
+            )
+          : SafeArea(
+              child: ListView(
+                children: [
+                  ListTileCustom(
+                      title: 'Box Constraint Examples',
+                      screen: BoxContraintExamples()),
+                  Divider(
+                    color: Colors.white,
+                  ),
+                  ListTileCustom(
+                      title: 'Columns & Rows', screen: ColumnExamples()),
+                  Divider(
+                    color: Colors.white,
+                  ),
+                  ListTileCustom(
+                      title: 'Mobile Screen Orientation',
+                      screen: OrientationExamples()),
+                  Divider(
+                    color: Colors.white,
+                  ),
+                  ListTileCustom(
+                      title: 'Media Query', screen: MediaQueryResponsive()),
+                  Divider(
+                    color: Colors.white,
+                  ),
+                  ListTileCustom(
+                      title: 'Layout Builder',
+                      screen: LayoutBuilderResponsive()),
+                  Divider(
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+    );
+  }
+}
+
+
+```
+</p>
+</details>
+
+Notes:
+- For fine grained control per widget on how it should be repsonsive, use LayoutBuilder
+- MediaQuery also provides information related to accessibility and you can make changes to font size etc
+
+Additional Reading:
+- [MediaQuery](https://api.flutter.dev/flutter/widgets/MediaQuery-class.html)
+- [LaytouBuilder](https://api.flutter.dev/flutter/widgets/LayoutBuilder-class.html)
