@@ -17,7 +17,8 @@ class ColumnExamples extends StatelessWidget {
                 toolbarHeight: kMinInteractiveDimension,
                 bottom: TabBar(
                   tabs: [
-                    Tab(text: 'Simple Column'),
+                    Tab(text: 'Simple Column Unresponsive 1'),
+                    Tab(text: 'Simple Column Unresponsive 2'),
                     Tab(text: 'Simple Column Responsive'),
                     Tab(text: 'Simple Column Responsive Flex'),
                   ],
@@ -25,7 +26,8 @@ class ColumnExamples extends StatelessWidget {
               ),
               body: TabBarView(
                 children: [
-                  ColumnExample1(),
+                  ColumnExampleUnresponsive1(),
+                  ColumnExampleUnresponsive2(),
                   ColumnExampleResponsive(),
                   ColumnExampleResponsiveFlex()
                 ],
@@ -42,8 +44,12 @@ class ColumnExamples extends StatelessWidget {
               child: Column(
                 children: [
                   ListTileCustom(
-                    title: 'Simple Column',
-                    screen: ColumnExample1(),
+                    title: 'Simple Column Unresponsive 1',
+                    screen: ColumnExampleUnresponsive1(),
+                  ),
+                  ListTileCustom(
+                    title: 'Simple Column Unresponsive 2',
+                    screen: ColumnExampleUnresponsive2(),
                   ),
                   ListTileCustom(
                     title: 'Simple Column Responsive',
