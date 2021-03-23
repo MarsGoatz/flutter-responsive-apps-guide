@@ -15,7 +15,7 @@
 
 Flutter framework is constraint based framework, i.e, a widget bounds is constrained by the parent widget. If, for example, you have a container has a dimension of height 900px and width 500px but when you run the code on your simulator, you see that its actually smaller than what you have intended to, this is due to the box constraints coming in from the parent widget which passes contraints of maybe 800px 400px. If the parent of the container is a scaffold, then the box constraint coming in from the scaffold to the container would be the screen dimensions. Box contraints are passed automatically by the parent.
 
-![alt Box Constraint Image](images/box_constraint.png)
+![alt Box Constraint Image](images/box_constraint_1.png)
 
 <br/>
 
