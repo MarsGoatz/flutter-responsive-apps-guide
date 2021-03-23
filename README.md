@@ -89,11 +89,13 @@ class Example2 extends StatelessWidget {
 
 Notes:
 - A parent can pass inifinity constraints to its child
+- Use ConstrainedBox to pass constraints to child in your custom widgets
 - You can check the constraints coming from parent from dev tools for debugging.
 
 Additional Reading:
 - [Box Constraints 101](https://marsgoat.medium.com/flutter-box-constraints-101-the-basics-bd0babe650f9)
 - [Understanding Constraints](https://flutter.dev/docs/development/ui/layout/constraints)
+- [ConstrainedBox](https://api.flutter.dev/flutter/widgets/ConstrainedBox-class.html)
 
 ## 1.2. Responsive Apps On Various Mobile Screen Sizes
 When creating an app across various mobile screen, we want to make sure they are responsive and expand or collapse based on the screen dimensions. So we will look at how to achieve that with Columns and Rows.
